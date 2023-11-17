@@ -30,6 +30,7 @@ import com.demo.loginregisterretrofit.Response.RestAdapter;
 import com.demo.loginregisterretrofit.Response.RetrofitClient;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -39,6 +40,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //definisikan variable
     private EditText etUname, etPass;
     private Button btnlogin;
     private TextView tvreg, skip_txt;
@@ -46,17 +48,23 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     public static final String SHARED_PREFERENCES_NAME = "login_portal";
     public static final String USER_ID = "user_id";
-    public static final String FNAME = "fname";
-    public static final String LNAME = "lname";
+    public static final String USERNAME = "username";
+    public static final String NAMA = "nama";
+    public static final String ALAMAT = "alamat";
+    public static final String TEMPATLAHIR = "tempat_lahir";
+    public static final String TANGGALLAHIR = "tgl_lahir";
+    public static final String NOTELP = "no_telp";
     public static final String EMAIL = "email";
+
     public static final String PASSWORD = "password";
     private View parent_view;
-    String email, password;
+    String username, password;
     RelativeLayout rl_pwd;
     LinearLayout ll_lay;
     Pattern pattern_pwd = Pattern.compile("^[a-zA-Z0-9]+$");
-    public static String userid = "", userfname = "", userlname = "", useremail = "";
+    public static String userid = "", nama = "",  useremail = "" , alamat = "", tempatlahir = "", tgllahir = "" , notelp = "";
 
+    //memasukkan nilai kedalam variable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,16 +79,16 @@ public class LoginActivity extends AppCompatActivity {
         rl_pwd = findViewById(R.id.rl_pwd);
         etUname = (EditText) findViewById(R.id.etemail);
         etPass = (EditText) findViewById(R.id.etpassword);
-        skip_txt = findViewById(R.id.skip_txt);
+//        skip_txt = findViewById(R.id.skip_txt);
         btnlogin = (Button) findViewById(R.id.btn);
         tvreg = (TextView) findViewById(R.id.tvreg);
 
-        skip_txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Opps! Module is Not Ready.", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        skip_txt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(LoginActivity.this, "Opps! Module is Not Ready.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         tvreg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,18 +100,19 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        //membuat aksi btnlogin
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = etUname.getText().toString().trim();
+                username = etUname.getText().toString().trim();
                 password = etPass.getText().toString().trim();
 
-                Log.d("userdata", "onClick: " + email + password);
+                Log.d("userdata", "onClick: " + username + password);
 
-                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
+                //validasi
+                if (!username.isEmpty()) {
                     if (!password.isEmpty() && pattern_pwd.matcher(password).matches()) {
-
                         loginUser();
 
                     } else {
@@ -131,8 +140,8 @@ public class LoginActivity extends AppCompatActivity {
         API api = RestAdapter.createAPI();
 
 //        API service = RetrofitClient.getRetrofitInstance().create(API.class);
-        Log.d("call_call", "onClick: " + email + password);
-        Call<LoginUserResponse> call = api.getUserLogin(email, password);
+        Log.d("call_call", "onClick: " + username + password);
+        Call<LoginUserResponse> call = api.getUserLogin(username, password);
         call.enqueue(new Callback<LoginUserResponse>() {
             @Override
             public void onResponse(Call<LoginUserResponse> call, Response<LoginUserResponse> response) {
@@ -141,9 +150,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.i("onSuccess", response.body().loginresponse.getEmail());
                         userid = response.body().loginresponse.user_id;
+                        username = response.body().loginresponse.username;
+                        nama = response.body().loginresponse.nama;
+                        alamat = response.body().loginresponse.alamat;
+                        tempatlahir = response.body().loginresponse.tempat_lahir;
+                        tgllahir = response.body().loginresponse.tgl_lahir;
+                        notelp = response.body().loginresponse.no_telp;
                         useremail = response.body().loginresponse.email;
-                        userfname = response.body().loginresponse.first_name;
-                        userlname = response.body().loginresponse.last_name;
 
                         try {
                             parseLoginData();
@@ -190,9 +203,14 @@ public class LoginActivity extends AppCompatActivity {
                 sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putString(USER_ID, userid);
-                editor.putString(FNAME, userfname);
-                editor.putString(LNAME, userlname);
+                editor.putString(USERNAME, username);
+                editor.putString(NAMA, nama);
                 editor.putString(EMAIL, useremail);
+                editor.putString(ALAMAT, alamat);
+                editor.putString(TEMPATLAHIR, tempatlahir);
+                editor.putString(TANGGALLAHIR, tgllahir);
+                editor.putString(NOTELP, notelp);
+
                 editor.apply();
 
                 Intent intent = new Intent(LoginActivity.this, HomeScreen.class);

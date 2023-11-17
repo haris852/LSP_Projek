@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://192.168.43.207/digital_reader/";
+    private static final String BASE_URL = "http://10.10.182.184/webservices/";
     //private static final String BASE_URL = "http://pixeldev.in/webservices/digital_reader/";
 
     public static Retrofit getRetrofitInstance() {

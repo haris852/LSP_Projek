@@ -30,8 +30,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.EMAIL;
-import static com.demo.loginregisterretrofit.Forms.LoginActivity.FNAME;
-import static com.demo.loginregisterretrofit.Forms.LoginActivity.LNAME;
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.SHARED_PREFERENCES_NAME;
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.USER_ID;
 
@@ -48,6 +46,8 @@ public class UpdateActivity extends AppCompatActivity {
     Pattern pattern_pwd = Pattern.compile("^[a-zA-Z0-9]+$");
     public static String userid = "", userfname = "", userlname = "", useremail = "";
 
+
+    //melakukan get data
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +56,8 @@ public class UpdateActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         str_userid = sharedPreferences.getString(USER_ID, "");
-        str_fname = sharedPreferences.getString(FNAME, "");
-        str_lname = sharedPreferences.getString(LNAME, "");
+//        str_fname = sharedPreferences.getString(FNAME, "");
+//        str_lname = sharedPreferences.getString(LNAME, "");
         str_email = sharedPreferences.getString(EMAIL, "");
 
 
@@ -174,8 +174,8 @@ public class UpdateActivity extends AppCompatActivity {
                 sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putString(USER_ID, userid);
-                editor.putString(FNAME, userfname);
-                editor.putString(LNAME, userlname);
+//                editor.putString(FNAME, userfname);
+//                editor.putString(LNAME, userlname);
                 editor.putString(EMAIL, useremail);
                 editor.apply();
 

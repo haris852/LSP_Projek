@@ -15,16 +15,21 @@ import android.widget.TextView;
 import com.demo.loginregisterretrofit.Forms.LoginActivity;
 import com.demo.loginregisterretrofit.Forms.UpdateActivity;
 
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.ALAMAT;
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.EMAIL;
-import static com.demo.loginregisterretrofit.Forms.LoginActivity.FNAME;
-import static com.demo.loginregisterretrofit.Forms.LoginActivity.LNAME;
+
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.NAMA;
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.NOTELP;
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.SHARED_PREFERENCES_NAME;
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.TANGGALLAHIR;
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.TEMPATLAHIR;
+import static com.demo.loginregisterretrofit.Forms.LoginActivity.USERNAME;
 import static com.demo.loginregisterretrofit.Forms.LoginActivity.USER_ID;
 
 public class HomeScreen extends AppCompatActivity {
     Button logout, edit;
-    TextView text_userid, text_email, text_fname, text_lname;
-    String str_email, str_fname, str_lname, str_userid, str_passowrd;
+    TextView text_userid, text_email, text_username, text_nama, text_alamat, text_tempatlahir, text_tgllahir, text_notelp;
+    String str_email, str_username, str_nama, str_userid, str_passowrd , str_alamat, str_tempatlahir, str_tgllahir, str_notelp;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -35,21 +40,33 @@ public class HomeScreen extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         str_userid = sharedPreferences.getString(USER_ID, "");
-        str_fname = sharedPreferences.getString(FNAME, "");
-        str_lname = sharedPreferences.getString(LNAME, "");
+        str_username = sharedPreferences.getString(USERNAME, "");
+        str_nama = sharedPreferences.getString(NAMA, "");
         str_email = sharedPreferences.getString(EMAIL, "");
+        str_alamat = sharedPreferences.getString(ALAMAT, "");
+        str_tempatlahir = sharedPreferences.getString(TEMPATLAHIR, "");
+        str_tgllahir = sharedPreferences.getString(TANGGALLAHIR, "");
+        str_notelp = sharedPreferences.getString(NOTELP, "");
 
         text_userid = (TextView) findViewById(R.id.user_id);
         text_email = (TextView) findViewById(R.id.user_email);
-        text_fname = (TextView) findViewById(R.id.user_fname);
-        text_lname = (TextView) findViewById(R.id.user_lname);
+        text_username = (TextView) findViewById(R.id.user_username);
+        text_nama = (TextView) findViewById(R.id.user_nama);
+        text_alamat = (TextView) findViewById(R.id.user_alamat);
+        text_tempatlahir = (TextView) findViewById(R.id.user_tempatlahir);
+        text_tgllahir = (TextView) findViewById(R.id.user_tgllahir);
+        text_notelp = (TextView) findViewById(R.id.user_notelp);
         logout = findViewById(R.id.logout_btn);
-        edit = findViewById(R.id.edit);
+//        edit = findViewById(R.id.edit);
 
-        text_userid.setText("UserId: " + str_userid);
-        text_email.setText("Email: " + str_email);
-        text_fname.setText("First Name: " + str_fname);
-        text_lname.setText("Last Name:  " + str_lname);
+        text_userid.setText("UserId : " + str_userid);
+        text_email.setText("Email : " + str_email);
+        text_username.setText("Username : " + str_username);
+        text_nama.setText("Nama :  " + str_nama);
+        text_alamat.setText("Alamat :  " + str_alamat);
+        text_tempatlahir.setText("Tempat Lahir :  " + str_tempatlahir);
+        text_tgllahir.setText("Tanggal Lahir :  " + str_tgllahir);
+        text_notelp.setText("No Telp:  " + str_notelp);
 
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -58,13 +75,13 @@ public class HomeScreen extends AppCompatActivity {
                 logout();
             }
         });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UpdateActivity.class);
-                startActivity(intent);
-            }
-        });
+//        edit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), UpdateActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 

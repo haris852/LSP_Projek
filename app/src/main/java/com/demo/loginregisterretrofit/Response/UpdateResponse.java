@@ -8,7 +8,6 @@ public class UpdateResponse {
     @Expose()
     public String user_id;
 
-
     @SerializedName("first_name")
     @Expose()
     public String first_name;
@@ -25,7 +24,6 @@ public class UpdateResponse {
     public String getEmail() {
         return email;
     }
-
 
     public String getFirst_name() {
         return first_name;

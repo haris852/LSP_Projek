@@ -3,6 +3,7 @@ package com.demo.loginregisterretrofit.Forms;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +33,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -43,11 +48,20 @@ import static com.demo.loginregisterretrofit.Response.API.BaseURL;
 
 
 public class Register extends AppCompatActivity {
-    private EditText et_fname, et_lname, et_email, etpassword;
+    private EditText et_username, et_nama, et_alamat, et_tmptlahir, et_tgllahir, et_notelp, et_email, etpassword;
     private FloatingActionButton btnregister;
     private TextView tvlogin;
-    String firstName;
-    String lastName;
+    private ImageButton btnDate;
+
+    private int tahun,bulan,tanggal;
+    private int tahun2,bulan2,tanggal2;
+
+    String username;
+    String nama;
+    String alamat;
+    String tempat_lahir;
+    String tgl_lahir;
+    String no_telp;
     String email;
     String password;
     LinearLayout lyt_linear;
@@ -57,20 +71,26 @@ public class Register extends AppCompatActivity {
     public Register() {
     }
 
+    //memasukkan nilai kedalam variable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarGradiant(this);
         setContentView(R.layout.activity_register);
 
-        et_fname = (EditText) findViewById(R.id.et_fname);
-        et_lname = (EditText) findViewById(R.id.et_lname);
+        et_username = (EditText) findViewById(R.id.et_username);
+        et_nama = (EditText) findViewById(R.id.et_nama);
+        et_alamat = (EditText) findViewById(R.id.et_alamat);
+        et_tmptlahir = (EditText) findViewById(R.id.et_tmptlahir);
+        et_tgllahir = (EditText) findViewById(R.id.et_tgllahir);
+        et_notelp = (EditText) findViewById(R.id.et_notelp);
         et_email = (EditText) findViewById(R.id.et_email);
         etpassword = (EditText) findViewById(R.id.etpassword);
         btnregister = findViewById(R.id.btn);
         u_image = findViewById(R.id.u_image);
         lyt_linear = findViewById(R.id.lyt_linear);
         tvlogin = (TextView) findViewById(R.id.tvlogin);
+        btnDate = findViewById(R.id.btnDate);
 
         tvlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,24 +100,70 @@ public class Register extends AppCompatActivity {
                 Register.this.finish();
             }
         });
-        u_image.setOnClickListener(new View.OnClickListener() {
+
+        btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Register.this, LoginActivity.class);
-                startActivity(intent);
-                Register.this.finish();
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                tahun = calendar.get(Calendar.YEAR);
+                bulan = calendar.get(Calendar.MONTH);
+                tanggal = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog;
+                dialog = new DatePickerDialog(Register.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        tahun = i;
+                        bulan = i1;
+                        tanggal = i2;
+
+                        et_tgllahir.setText(tahun + "-" + bulan + "-" + tanggal);
+                    }
+                },tahun,bulan,tanggal);
+                dialog.show();
             }
         });
 
+        et_tgllahir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                tahun2 = calendar.get(Calendar.YEAR);
+                bulan2 = calendar.get(Calendar.MONTH);
+                tanggal2 = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog;
+                dialog = new DatePickerDialog(Register.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        tahun2 = i;
+                        bulan2 = i1;
+                        tanggal2 = i2;
+
+                        et_tgllahir.setText(tahun2 + " - " + bulan2 + " - " + tanggal2);
+                    }
+                },tahun2,bulan2,tanggal2);
+                dialog.show();
+            }
+        });
+
+
+        //memberikan aksi kedalam btn register
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firstName = et_fname.getText().toString();
-                lastName = et_lname.getText().toString();
+                username = et_username.getText().toString();
+                nama = et_nama.getText().toString();
+                alamat = et_alamat.getText().toString();
+                tempat_lahir = et_tmptlahir.getText().toString();
+                tgl_lahir = et_tgllahir.getText().toString();
+                no_telp = et_notelp.getText().toString();
+
                 email = et_email.getText().toString();
                 password = etpassword.getText().toString();
 
-                Log.d("userdata", "onClick: " + email + password);
+                //menampilkan pesan ketika melakukan pengisian inputan
+                Log.d("userdata", "onClick: " + username + password + tgl_lahir);
                 registerMe();
                 //ata mla sang kai karu mla response blank yet ahi
                 //response server ka bata pehle
@@ -139,6 +205,8 @@ public class Register extends AppCompatActivity {
         }
     }
 
+
+    //membuat methode yang menghubungkan ke api webservice
     private void registerMe() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseURL)
@@ -146,7 +214,7 @@ public class Register extends AppCompatActivity {
                 .build();
 
         API api = retrofit.create(API.class);
-        Call<RegsiterResponse> call = api.getUserRegi(firstName, lastName, email, password);
+        Call<RegsiterResponse> call = api.getUserRegi(username, nama, alamat, tempat_lahir, tgl_lahir, no_telp, email, password);
         call.enqueue(new Callback<RegsiterResponse>() {
             @Override
             public void onResponse(Call<RegsiterResponse> call, Response<RegsiterResponse> response) {

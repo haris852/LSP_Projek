@@ -22,7 +22,7 @@
     <string name="CANCEL">CANCEL</string>
     <string name="YES">YES</string>
     <string name="title_activity_login">Login</string>
-    <string name="hint_email">Email</string>
+    <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="text_bt_login">Login</string>
     <string name="forgot_password">Forget Password</string>
